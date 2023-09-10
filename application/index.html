@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css">
+    <title>Books</title>
+  </head>
+  <body>
+    <div id="books">
+      <h2>Books</h2>
+      <ul id="bookList">
+        <li>The Name of the Wind</li>
+        <li>War and Peace</li>
+        <li>The Bible</li>
+      </ul>
+      <form action="post" id="bookAddForm" class="form">
+        <h3>Add a book</h3>
+        <label for="">Pick a title</label>
+        <input type="text" name="title" id="bookTitle"><br>
+        <label for="authors">Pick an author</label>
+        <select name="authors" id="bookAuthor"></select><br>
+        <label for="genres">Pick a genre</label>
+        <select name="genres" id="bookGenre"></select><br>
+        <button>Add</button>
+      </form>
+      <form action="post" id="bookUpdateForm" class="form">
+        <h3>Update a book</h3>
+        <label for="bookUpdate">Pick a book</label>
+        <input type="text" name="book" id="bookUpdate"><br>
+        <label for="">Pick a new title</label>
+        <input type="text" name="title" id="bookUpdateTitle"><br>
+        <label for="authors">Pick a new author</label>
+        <select name="authors" id="bookUpdateAuthor"></select><br>
+        <label for="genres">Pick a new genre</label>
+        <select name="genres" id="bookUpdateGenre"></select><br>
+        <button>Update</button>
+      </form>
+      <form action="post" id="bookDeleteForm" class="form">
+        <h3>Delete a book</h3>
+        <label for="bookDelete">Pick a book</label>
+        <input type="text" name="book" id="bookDelete"><br>
+        <button>Delete</button>
+      </form>
+    </div>
+    <div id="authors">
+      <h2>Authors</h2>
+      <ul id="authorsList">
+        <li>Patrick Rothfuss</li>
+        <li>George R. R. Martin</li>
+      </ul>
+      <form action="post" id="authorAddForm" class="form">
+        <h3>Add an author</h3>
+        <label for="authorName">Pick a name</label>
+        <input type="text" name="authorName" id="authorAddName" required><br>
+        <label for="authorAddName">Pick an age</label>
+        <input type="number" name="authorAge" id="authorAddAge" required><br>
+        <button>Add</button>
+      </form>
+      <form action="post" id="authorUpdateForm" class="form">
+        <h3>Update an author</h3>
+        <label for="authorUpdateSelect">Select author</label>
+        <select name="oldAuthor" id="authorUpdateSelect"></select><br>
+        <label for="authorUpdateName">Pick a new name</label>
+        <input type="text" name="newAuthor" id="authorUpdateName"><br>
+        <label for="authorUpdateAge">Pick a new age</label>
+        <input type="number" name="authorAge" id="authorUpdateAge"><br>
+        <button>Update</button>
+      </form>
+      <form action="post" id="authorDeleteForm" class="form">
+        <h3>Delete an author</h3>
+        <label for="genreDelete">Pick an author</label>
+        <input type="text" name="author" id="authorDelete" required><br>
+        <button>Delete</button>
+      </form>
+    </div>
+    <div id="genres">
+      <h2>Genres</h2>
+      <ul id="genresList">
+        <li>Fantasy</li>
+        <li>SciFi</li>
+        <li>Other</li>
+      </ul>
+      <form action="post" id="genreAddForm" class="form">
+        <h3>Add a genre</h3>
+        <label for="genreAddName">Pick a name</label>
+        <input type="text" name="genre" id="genreAddName" required><br>
+        <button>Add</button>
+      </form>
+      <form action="post" id="genreUpdateForm" class="form">
+        <h3>Update a genre</h3>
+        <label for="genreUpdateSelect">Select genre</label>
+        <select name="oldGenre" id="genreUpdateSelect"></select><br>
+        <label for="genreUpdateName">Pick a new name</label>
+        <input type="text" name="newGenre" id="genreUpdateName"><br>
+        <button>Update</button>
+      </form>
+      <form action="post" id="genreDeleteForm" class="form">
+        <h3>Delete a genre</h3>
+        <label for="genreDelete">Pick a genre</label>
+        <input type="text" name="genre" id="genreDelete" required><br>
+        <button>Delete</button>
+      </form>
+    </div>
+  </body>
+</html>

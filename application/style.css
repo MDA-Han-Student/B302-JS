@@ -1,0 +1,13 @@
+body {
+    display: flex;
+}
+
+#books, #authors, #genres {
+    flex: auto;
+    padding: 1rem;
+}
+
+form {
+    border-style: solid;
+    border-color: white;
+}
