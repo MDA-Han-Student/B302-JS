@@ -154,25 +154,43 @@ async function addGenres() {
   }
 }
 
-// --- In Progress --- //
-async function addElement(type, toAdd) {
-  // Mist de functie om de dingen aan lijsten toe te voegen
-  // Zou met een get id moeten ophalen om dat te doen
+
+async function addElement(type, toAdd, id) {
   const li = `
     <li>${toAdd}</li>
     `;
+  let select = "";
+  
+
   if (type === "book") {
     books.innerHTML += li;
+    const data = await get("books", id);
+    select = `
+        <option value=${data[data.length-1]["id"]}>${data[data.length-1]["name"]}</option>
+        `;
+    bookUpdateSelect.innerHTML += select;
+    bookDeleteSelect.innerHTML += select;
   } else if (type === "author") {
     authors.innerHTML += li;
+    const data = await get("authors", id);
+    select = `
+        <option value=${data[data.length-1]["id"]}>${data[data.length-1]["name"]}</option>
+        `;
+    authorUpdateSelect.innerHTML += select;
+    authorDeleteSelect.innerHTML += select;
   } else if (type === "genre") {
     genres.innerHTML += li;
+    const data = await get("genres", id);
+    select = `
+        <option value=${data[data.length-1]["id"]}>${data[data.length-1]["name"]}</option>
+        `;
+    genreUpdateSelect.innerHTML += select;
+    genreDeleteSelect.innerHTML += select;
   }
 }
 
-function deleteElement() {
-  // Net als bij missende functionaliteit addElement()
-  // moet hier id worden opgevraagd met een get om te deleten
+// --- In Progress --- //
+function deleteElement(type, toDelete, id) {
 }
 // --- ----------- --- //
 
@@ -302,3 +320,6 @@ genreDelete.addEventListener("submit", (e) => {
 
   _delete("genres", id);
 });
+
+const genreDing = $('#genres');
+console.log(genreDing.querySelectorAll("option[value='5']"));
