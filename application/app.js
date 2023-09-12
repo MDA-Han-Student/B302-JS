@@ -1,96 +1,304 @@
-const path = require("path");
-
 function $(query) {
-    return document.querySelector(query);
+  return document.querySelector(query);
 }
 
-const bookAdd = $("bookAddForm"), bookUpdate = $("bookUpdateForm"), 
-        bookDelete = $("bookDeleteForm"), authorAdd = $("authorAddForm"), 
-        authorUpdate = $("authorUpdateForm"), authorDelete = $("authorDeleteForm"),
-        genreAdd = $("genreAddForm"), genreUpdate = $("genreUpdateForm"), 
-        genreDelete = $("genreDeleteForm");
+const bookAdd = $("#bookAddForm"),
+  bookUpdate = $("#bookUpdateForm"),
+  bookDelete = $("#bookDeleteForm"),
+  authorAdd = $("#authorAddForm"),
+  authorUpdate = $("#authorUpdateForm"),
+  authorDelete = $("#authorDeleteForm"),
+  genreAdd = $("#genreAddForm"),
+  genreUpdate = $("#genreUpdateForm"),
+  genreDelete = $("#genreDeleteForm");
 
-async function sendInfo() {
+async function get(place, id = "") {
+  try {
+    let response = await fetch("http://api.training.theburo.nl" + "/" + place);
+    if (id != "") {
+      response = await fetch(
+        "http://api.training.theburo.nl" + "/" + place + "/" + id
+      );
+    }
 
+    const result = await response.json();
+
+    return result;
+  } catch (error) {
+    throw new Error(error);
+  }
 }
 
-async function post (place, data) {
-    try {
-        const response = await fetch(path.join("http://api.training.theburo.nl", place, "/"), {
-            method: "POST", 
-            headers: {
-                "Accept": "Application/json",
-            },
-            body: JSON.stringify(data)
-        });
-        const result = await response.json();
-        console.log(result);
-    } catch (error) {
-        console.log(error);
-    }
-    
+async function post(place, data) {
+  try {
+    const response = await fetch(
+      "http://api.training.theburo.nl" + "/" + place,
+      {
+        method: "POST",
+        headers: {
+          Accept: "Application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }
+    );
+    const result = await response.json();
+  } catch (error) {
+    throw new Error(error);
+  }
 }
 
-bookAdd.addEventListener("submit", () => {
-    evt.preventDefault();
+async function update(place, id, data) {
+  try {
+    const response = await fetch(
+      "http://api.training.theburo.nl" + "/" + place + "/" + id,
+      {
+        method: "PUT",
+        headers: {
+          Accept: "Application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }
+    );
+    const result = await response.json();
+  } catch (error) {
+    throw new Error(error);
+  }
+}
 
-    const title = $('#bookTitle');
-    const author = $('#bookAuthor');
-    const genre = $('#bookGenre');
+async function _delete(place, id) {
+  try {
+    const response = await fetch(
+      "http://api.training.theburo.nl" + "/" + place + "/" + id,
+      {
+        method: "DELETE",
+      }
+    );
+    const result = await response.json();
+  } catch (error) {
+    throw new Error(error);
+  }
+}
 
-    const data = {
-        title: title,
-        author: author,
-        genre: genre
-    }
+const books = $("#bookList"),
+  authors = $("#authorsList"),
+  genres = $("#genresList");
 
-    post("books", data);
-});
-bookUpdate.addEventListener("submit", () => {
-    evt.preventDefault();
-    sendInfo();
-});
-bookDelete.addEventListener("submit", () => {
-    evt.preventDefault();
-    sendInfo();
-});
-authorAdd.addEventListener("submit", () => {
-    evt.preventDefault();
-    
-    const name = $('authorAddName');
-    const age = $('authorAddAge');
+const bookAuthor = $("#bookAuthor"),
+  bookGenre = $("#bookGenre"),
+  bookUpdateSelect = $("#bookUpdate"),
+  bookUpdateAuthor = $("#bookUpdateAuthor"),
+  bookUpdateGenre = $("#bookUpdateGenre"),
+  bookDeleteSelect = $("#bookDeleteSelect");
+const authorUpdateSelect = $("#authorUpdateSelect"),
+  updateDeleteSelect = $("#authorDeleteSelect");
+const genreUpdateSelect = $("#genreUpdateSelect"),
+  genreDeleteSelect = $("#genreDeleteSelect");
 
-    const data = {
-        name: name,
-        age: age
-    }
+async function addBooks() {
+  const data = await get("books");
 
-    post("authors", data);
-});
-authorUpdate.addEventListener("submit", () => {
-    evt.preventDefault();
-    sendInfo();
-});
-authorDelete.addEventListener("submit", () => {
-    evt.preventDefault();
-    sendInfo();
-});
-genreAdd.addEventListener("submit", () => {
-    evt.preventDefault();
-    
-    const genre = $('genreAddName');
+  for (let i = 0; i < data.length; i++) {
+    const li = `
+            <li>${data[i]["name"]}</li>
+            `;
+    books.innerHTML += li;
 
-    const data = {
-        genre: genre
-    }
-    
-    post("genres", data);
+    const select = `
+            <option value=${data[i]["id"]}>${data[i]["name"]}</option>
+            `;
+
+    bookUpdateSelect.innerHTML += select;
+    bookDeleteSelect.innerHTML += select;
+  }
+}
+
+async function addAuthors() {
+  const data = await get("authors");
+
+  for (let i = 0; i < data.length; i++) {
+    const li = `
+            <li>${data[i]["name"]}</li>
+            `;
+    authors.innerHTML += li;
+
+    const select = `
+            <option value=${data[i]["id"]}>${data[i]["name"]}</option>
+            `;
+
+    bookAuthor.innerHTML += select;
+    bookUpdateAuthor.innerHTML += select;
+    authorUpdateSelect.innerHTML += select;
+    authorDeleteSelect.innerHTML += select;
+  }
+}
+
+async function addGenres() {
+  const data = await get("genres");
+
+  for (let i = 0; i < data.length; i++) {
+    const li = `
+            <li>${data[i]["name"]}</li>
+            `;
+    genres.innerHTML += li;
+
+    const select = `
+            <option value=${data[i]["id"]}>${data[i]["name"]}</option>
+            `;
+
+    bookGenre.innerHTML += select;
+    bookUpdateGenre.innerHTML += select;
+    genreUpdateSelect.innerHTML += select;
+    genreDeleteSelect.innerHTML += select;
+  }
+}
+
+// --- In Progress --- //
+async function addElement(type, toAdd) {
+  // Mist de functie om de dingen aan lijsten toe te voegen
+  // Zou met een get id moeten ophalen om dat te doen
+  const li = `
+    <li>${toAdd}</li>
+    `;
+  if (type === "book") {
+    books.innerHTML += li;
+  } else if (type === "author") {
+    authors.innerHTML += li;
+  } else if (type === "genre") {
+    genres.innerHTML += li;
+  }
+}
+
+function deleteElement() {
+  // Net als bij missende functionaliteit addElement()
+  // moet hier id worden opgevraagd met een get om te deleten
+}
+// --- ----------- --- //
+
+addBooks();
+addAuthors();
+addGenres();
+
+bookAdd.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  const title = $("#bookTitle").value;
+  const author_id = bookAuthor.value;
+  const genre_id = bookGenre.value;
+
+  const data = {
+    name: title,
+    author_id: author_id,
+    genre_id: genre_id,
+  };
+
+  post("books", data).then(() => {
+    addElement("book", title);
+  });
 });
-genreUpdate.addEventListener("submit", () => {
-    evt.preventDefault();
-    sendInfo();
+bookUpdate.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  const id = $("#bookUpdate").value;
+  const name = $("#bookUpdateTitle").value;
+  const author_id = bookUpdateAuthor.value;
+  const genre_id = bookUpdateGenre.value;
+
+  const data = {};
+
+  if (name != "") {
+    data.name = name;
+  }
+  if (author_id != "") {
+    data.author_id = author_id;
+  }
+  if (genre_id != "") {
+    data.genre_id = genre_id;
+  }
+
+  if (data.length > 0) {
+    update("books", id, data);
+  }
 });
-genreDelete.addEventListener("submit", () => {
-    evt.preventDefault();
-    sendInfo();
+bookDelete.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  const id = bookDeleteSelect.value;
+
+  _delete("books", id);
+});
+authorAdd.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  const name = $("#authorAddName").value;
+  const age = $("#authorAddAge").value;
+
+  const data = {
+    name: name,
+    age: age,
+  };
+
+  post("authors", data).then(() => {
+    addElement("author", name);
+  });
+});
+authorUpdate.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  const id = authorUpdateSelect.value;
+  const name = $("#authorUpdateName").value;
+  const age = $("#authorUpdateAge").value;
+
+  const data = {};
+
+  if (name != "") {
+    data.name = name;
+  }
+  if (age != "") {
+    data.age = age;
+  }
+
+  if (data.length > 0) {
+    update("authors", id, data);
+  }
+});
+authorDelete.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  const id = authorDeleteSelect.value;
+
+  _delete("authors", id);
+});
+genreAdd.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  const genre = $("#genreAddName").value;
+
+  const data = {
+    name: genre,
+  };
+
+  post("genres", data).then(() => {
+    addElement("genre", genre);
+  });
+});
+genreUpdate.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  const id = genreUpdateSelect.value;
+  const name = $("#genreUpdateName").value;
+
+  const data = {
+    name: name,
+  };
+
+  update("genres", id, data);
+});
+genreDelete.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  const id = genreDeleteSelect.value;
+
+  _delete("genres", id);
 });
