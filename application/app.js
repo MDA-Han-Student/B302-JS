@@ -323,6 +323,3 @@ genreDelete.addEventListener("submit", (e) => {
 
   _delete("genres", id);
 });
-
-const genreDing = $("#genres");
-console.log(genreDing.querySelectorAll("option[value='5']"));
