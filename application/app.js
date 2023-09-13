@@ -154,19 +154,19 @@ async function addGenres() {
   }
 }
 
-
 async function addElement(type, toAdd, id) {
   const li = `
     <li>${toAdd}</li>
     `;
   let select = "";
-  
 
   if (type === "book") {
     books.innerHTML += li;
     const data = await get("books", id);
     select = `
-        <option value=${data[data.length-1]["id"]}>${data[data.length-1]["name"]}</option>
+        <option value=${data[data.length - 1]["id"]}>${
+      data[data.length - 1]["name"]
+    }</option>
         `;
     bookUpdateSelect.innerHTML += select;
     bookDeleteSelect.innerHTML += select;
@@ -174,7 +174,9 @@ async function addElement(type, toAdd, id) {
     authors.innerHTML += li;
     const data = await get("authors", id);
     select = `
-        <option value=${data[data.length-1]["id"]}>${data[data.length-1]["name"]}</option>
+        <option value=${data[data.length - 1]["id"]}>${
+      data[data.length - 1]["name"]
+    }</option>
         `;
     authorUpdateSelect.innerHTML += select;
     authorDeleteSelect.innerHTML += select;
@@ -182,7 +184,9 @@ async function addElement(type, toAdd, id) {
     genres.innerHTML += li;
     const data = await get("genres", id);
     select = `
-        <option value=${data[data.length-1]["id"]}>${data[data.length-1]["name"]}</option>
+        <option value=${data[data.length - 1]["id"]}>${
+      data[data.length - 1]["name"]
+    }</option>
         `;
     genreUpdateSelect.innerHTML += select;
     genreDeleteSelect.innerHTML += select;
@@ -190,8 +194,7 @@ async function addElement(type, toAdd, id) {
 }
 
 // --- In Progress --- //
-function deleteElement(type, toDelete, id) {
-}
+function deleteElement(type, toDelete, id) {}
 // --- ----------- --- //
 
 addBooks();
@@ -321,5 +324,5 @@ genreDelete.addEventListener("submit", (e) => {
   _delete("genres", id);
 });
 
-const genreDing = $('#genres');
+const genreDing = $("#genres");
 console.log(genreDing.querySelectorAll("option[value='5']"));
