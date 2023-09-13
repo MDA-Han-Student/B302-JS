@@ -235,7 +235,7 @@ bookUpdate.addEventListener("submit", (e) => {
     data.genre_id = genre_id;
   }
 
-  if (data.length > 0) {
+  if (Object.keys(data).length > 0) {
     update("books", id, data);
   }
 });
@@ -277,7 +277,7 @@ authorUpdate.addEventListener("submit", (e) => {
     data.age = age;
   }
 
-  if (data.length > 0) {
+  if (Object.keys(data).length > 0) {
     update("authors", id, data);
   }
 });
