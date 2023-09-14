@@ -14,11 +14,13 @@ const bookAdd = $("#bookAddForm"),
 
 async function get(place, id = "") {
   try {
-    let response = await fetch("http://api.training.theburo.nl" + "/" + place);
+    let response;
     if (id != "") {
       response = await fetch(
         "http://api.training.theburo.nl" + "/" + place + "/" + id
       );
+    } else {
+      response = await fetch("http://api.training.theburo.nl" + "/" + place);
     }
 
     const result = await response.json();
