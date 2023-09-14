@@ -226,21 +226,15 @@ bookUpdate.addEventListener("submit", (e) => {
   const author_id = bookUpdateAuthor.value;
   const genre_id = bookUpdateGenre.value;
 
-  const data = {};
+  const data = {
+    name: name,
+    author_id: author_id,
+    genre_id: genre_id
+  };
 
-  if (name != "") {
-    data.name = name;
-  }
-  if (author_id != "") {
-    data.author_id = author_id;
-  }
-  if (genre_id != "") {
-    data.genre_id = genre_id;
-  }
-
-  if (Object.keys(data).length > 0) {
+  //if (Object.keys(data).length > 0) {
     update("books", id, data);
-  }
+  //}
 });
 bookDelete.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -271,18 +265,12 @@ authorUpdate.addEventListener("submit", (e) => {
   const name = $("#authorUpdateName").value;
   const age = $("#authorUpdateAge").value;
 
-  const data = {};
+  const data = {
+    name: name,
+    age: age
+  };
 
-  if (name != "") {
-    data.name = name;
-  }
-  if (age != "") {
-    data.age = age;
-  }
-
-  if (Object.keys(data).length > 0) {
-    update("authors", id, data);
-  }
+  update("authors", id, data);
 });
 authorDelete.addEventListener("submit", (e) => {
   e.preventDefault();
