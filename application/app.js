@@ -15,13 +15,15 @@ const bookAdd = $("#bookAddForm"),
 async function get(place, id = "") {
   try {
     let response;
-    if (id != "") {
-      response = await fetch(
-        "http://api.training.theburo.nl" + "/" + place + "/" + id
-      );
-    } else {
-      response = await fetch("http://api.training.theburo.nl" + "/" + place);
-    }
+    const get = id != "" ? "/" + id : "";
+    // if (id != "") {
+    //   response = await fetch(
+    //     "http://api.training.theburo.nl" + "/" + place + "/" + id
+    //   );
+    // } else {
+    //   response = await fetch("http://api.training.theburo.nl" + "/" + place);
+    // }
+    response = await fetch("http://api.training.theburo.nl" + "/" + place + get);
 
     const result = await response.json();
 
@@ -98,23 +100,46 @@ const authorUpdateSelect = $("#authorUpdateSelect"),
 const genreUpdateSelect = $("#genreUpdateSelect"),
   genreDeleteSelect = $("#genreDeleteSelect");
 
+let booksList = [];
+
 async function addBooks() {
-  const data = await get("books");
+  // const data = await get("books");
 
-  for (let i = 0; i < data.length; i++) {
-    const li = `
-            <li>${data[i]["name"]}</li>
-            `;
-    books.innerHTML += li;
+  booksList = await get("books");
+  // for (let i = 0; i < data.length; i++) {
+  //   booksList[i]
+  //   // const li = `
+  //   //         <li>${data[i]["name"]}</li>
+  //   //         `;
+  //   // books.innerHTML += li;
 
-    const select = `
-            <option value=${data[i]["id"]}>${data[i]["name"]}</option>
-            `;
+  //   // const select = `
+  //   //         <option value=${data[i]["id"]}>${data[i]["name"]}</option>
+  //   //         `;
 
-    bookUpdateSelect.innerHTML += select;
-    bookDeleteSelect.innerHTML += select;
+  //   // bookUpdateSelect.innerHTML += select;
+  //   // bookDeleteSelect.innerHTML += select;
+  // }
+  showBooks();
+}
+
+function showBooks() {
+  for (let i = 0; i < booksList.length; i++) {
+      const li = `
+              <li>${booksList[i]["name"]}</li>
+              `;
+      books.innerHTML += li;
+  
+      const select = `
+              <option value=${booksList[i]["id"]}>${booksList[i]["name"]}</option>
+              `;
+  
+      bookUpdateSelect.innerHTML += select;
+      bookDeleteSelect.innerHTML += select;
   }
 }
+
+
 
 async function addAuthors() {
   const data = await get("authors");
@@ -196,7 +221,10 @@ async function addElement(type, toAdd, id) {
 }
 
 // --- In Progress --- //
-function deleteElement(type, toDelete, id) {}
+function deleteElement(id) {
+  booksList = booksList.filter((book) => book.id != id);
+}
+
 // --- ----------- --- //
 
 addBooks();
@@ -243,6 +271,12 @@ bookDelete.addEventListener("submit", (e) => {
 
   const id = bookDeleteSelect.value;
 
+  deleteElement(id);
+  console.log(booksList);
+  books.innerHTML = "";
+  bookUpdateSelect.innerHTML = "";
+  bookDeleteSelect.innerHTML = "";
+  showBooks();
   _delete("books", id);
 });
 authorAdd.addEventListener("submit", (e) => {
@@ -311,5 +345,6 @@ genreDelete.addEventListener("submit", (e) => {
 
   const id = genreDeleteSelect.value;
 
+  
   _delete("genres", id);
 });
